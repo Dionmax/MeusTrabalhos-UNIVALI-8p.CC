@@ -34,15 +34,15 @@ public class Entregador extends Agent {
                     Gson g = new Gson();
                     pacote = g.fromJson(content, Pacote.class);
 
-                    System.out.println(pacote.getEndereco());
-
-                    ACLMessage msgEntrega = new ACLMessage(ACLMessage.INFORM);
-                    msgEntrega.addReceiver(new AID("Cliente", AID.ISLOCALNAME));
-                    msgEntrega.setLanguage("Português");
-                    msgEntrega.setOntology("Pedido");
-                    msgEntrega.setContent(g.toJson(pacote));
-                    myAgent.send(msgEntrega);
-
+                    ACLMessage msgParaOCliente = new ACLMessage(ACLMessage.INFORM);
+                    msgParaOCliente.addReceiver(new AID("Cliente", AID.ISLOCALNAME));
+                    msgParaOCliente.setLanguage("Português");
+                    msgParaOCliente.setOntology("Pedido");
+                    msgParaOCliente.setContent(content);
+                    myAgent.send(msgParaOCliente);
+                    
+                    System.out.println("O entregador leva o pacote do cliente: "
+                            + pacote.getCliente() + ", para o endereço: " + pacote.getEndereco() + "\n");
                 }
             }
         });

@@ -17,30 +17,31 @@ import Objetos.Pacote;
  * @author Dionmax
  */
 public class Empacotador extends Agent {
-    
+
     protected void setup() {
         addBehaviour(new CyclicBehaviour(this) {
-            
+
             public void action() {
-                
+
                 Pacote pacote = new Pacote();
 
                 //Receber mensagem do acolhedor
                 ACLMessage msgRecebimento = myAgent.receive();
-                
+
                 if (msgRecebimento != null) {
                     String ontology = msgRecebimento.getOntology();
                     String content = msgRecebimento.getContent();
-                    
+
                     Gson g = new Gson();
                     pacote = g.fromJson(content, Pacote.class);
-                    
+
                     if (ontology.equalsIgnoreCase("Empacotar")) {
                         System.out.println("O agente " + msgRecebimento.getSender().
                                 getName()
-                                + " enviou um pacote");
-                        
-                        System.out.println("Pacote: " + pacote.toString() + "\nRecebido pelo: " + myAgent.getLocalName());
+                                + " enviou um pacote\n");
+
+                        System.out.println("Pacote: " + pacote.toString() + "\nRecebido pelo: "
+                                + myAgent.getLocalName() + "\n");
                     }
 
                     // Retornar para o Acolhedor
@@ -50,6 +51,8 @@ public class Empacotador extends Agent {
                     msgEmpacotador.setOntology("PedidoEmpacotado");
                     msgEmpacotador.setContent(g.toJson(pacote));
                     myAgent.send(msgEmpacotador);
+
+                    System.out.println("Pacote devolvido para o:" + msgRecebimento.getSender().getName() + "\n");
                 } else {
                     block();
                 }

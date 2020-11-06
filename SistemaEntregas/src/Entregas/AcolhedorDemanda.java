@@ -14,11 +14,6 @@ import jade.lang.acl.ACLMessage;
  *
  * @author Dionmax
  */
-enum typesPacotes {
-    IniciarPedido,
-    PedidoEmpacotado,
-    Entregar
-}
 
 public class AcolhedorDemanda extends Agent {
 
@@ -34,7 +29,7 @@ public class AcolhedorDemanda extends Agent {
                     String ontology = msg.getOntology();
                     String content = msg.getContent();
 
-                    switch (typesPacotes.valueOf(ontology)) {
+                    switch (TypesOntology.valueOf(ontology)) {
                         case IniciarPedido:
 
                             System.out.println("O cliente " + msg.getSender().
