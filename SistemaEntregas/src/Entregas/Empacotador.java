@@ -36,25 +36,20 @@ public class Empacotador extends Agent {
                     pacote = g.fromJson(content, Pacote.class);
 
                     if (ontology.equalsIgnoreCase("Empacotar")) {
-                        System.out.println("O agente " + msgRecebimento.getSender().
-                                getName()
-                                + " enviou um pacote\n");
+                        System.out.println("Pedido " + pacote.getId()
+                                + " recebido pelo agente " + myAgent.getLocalName()
+                                + " para ser empacotado.\n");
 
-                        System.out.println("Pacote: " + pacote.toString() + "\nRecebido pelo: "
-                                + myAgent.getLocalName() + "\n");
+                        // Retornar para o Acolhedor
+                        System.out.println("Pacote " + pacote.getId() + " devolvido para o:" + msgRecebimento.getSender().getName() + "\n");
+
+                        ACLMessage msgEmpacotador = new ACLMessage(ACLMessage.INFORM);
+                        msgEmpacotador.addReceiver(new AID("Acolhedor", AID.ISLOCALNAME));
+                        msgEmpacotador.setLanguage("Português");
+                        msgEmpacotador.setOntology("PedidoEmpacotado");
+                        msgEmpacotador.setContent(g.toJson(pacote));
+                        myAgent.send(msgEmpacotador);
                     }
-
-                    // Retornar para o Acolhedor
-                    ACLMessage msgEmpacotador = new ACLMessage(ACLMessage.INFORM);
-                    msgEmpacotador.addReceiver(new AID("Acolhedor", AID.ISLOCALNAME));
-                    msgEmpacotador.setLanguage("Português");
-                    msgEmpacotador.setOntology("PedidoEmpacotado");
-                    msgEmpacotador.setContent(g.toJson(pacote));
-                    myAgent.send(msgEmpacotador);
-
-                    System.out.println("Pacote devolvido para o:" + msgRecebimento.getSender().getName() + "\n");
-                } else {
-                    block();
                 }
             }
         });
